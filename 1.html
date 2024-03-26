@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div id="quiz"></div>
+    <div id="results"></div>
+    <button id="submit">Submit</button>
+</div>
+
+<div id="additional-text">
+    <p>https://cointelegraph.com/news/irish-council-civil-liberties-microsoft-open-ai-partnership-must-be-investigated-merger</p>
+    <p>The Irish Council for Civil Liberties is calling for an investigation into the partnership between Microsoft and OpenAI, suggesting it should be treated as a merger. Microsoft's $13-billion investment in OpenAI has granted it a seat on the company's board and caught the attention of European regulators.</p>
+    <p>The Irish Council for Civil Liberties wants Microsoft to be looked into by European Union regulators concerning its partnership with OpenAI. They submitted their concerns to the European Commission on Feb. 2, laying out a case against treating the Microsoft–OpenAI relationship as anything other than a merger.</p>
+    <p>Several partner organizations, including Foxglove, Mozilla, and the European Digital SME Alliance, have endorsed the council's submission. They believe that Microsoft's involvement with OpenAI exceeds typical partnership arrangements.</p>
+    <p>The council points to Microsoft's significant investment in OpenAI and the recent firing and rehiring of its CEO and co-founder, Sam Altman, as signs of a merger. Microsoft intervened in OpenAI's decision to fire Altman, offering employment to him and other OpenAI workers who wished to leave with him.</p>
+    <p>The council suggests that Microsoft's actions indicate significant influence over OpenAI and possibly monopolistic control over the AI industry. They are asking the EU Commission to investigate whether Microsoft has ultimate technological control over services like ChatGPT, which rely on Microsoft's Azure cloud services.</p>
+    <p>According to the council, allowing such control would harm competition and consumers. They argue that letting large incumbents dictate AI development and ensure control over potential competitors serves their profit margins but not the public interest.</p>
+    <p>The Microsoft–OpenAI partnership is also under investigation in the United Kingdom to determine whether it should be legally considered a merger. Microsoft's CEO has described the partnership as "pro-competition" amidst these investigations.</p>
+</div>
+
+<script>
+    var myQuestions = [
+        {
+            question: "The Irish Council for Civil Liberties suggests that the Microsoft-OpenAI partnership should be treated as a merger.",
+            answers: {
+                a: 'true',
+                b: 'false',
+            },
+            correctAnswer: 'a'
+        },
+        {
+            question: "2. European regulators have already concluded that the Microsoft-OpenAI partnership is a merger. ",
+            answers: {
+                a: 'true',
+                b: 'false',
+            },
+            correctAnswer: 'b'
+        },
+        {
+            question: "Foxglove, Mozilla, and the European Digital SME Alliance oppose the Irish Council for Civil Liberties' concerns about the Microsoft-OpenAI partnership.",
+            answers: {
+                a: 'true',
+                b: 'false',
+            },
+            correctAnswer: 'b'
+        },
+        {
+            question: "Microsoft's involvement with OpenAI is considered typical and does not exceed standard partnership arrangements. (False)",
+            answers: {
+                a: 'true',
+                b: 'false',
+            },
+            correctAnswer: 'b'
+        },
+        {
+            question: "The European Commission has not received any concerns regarding the Microsoft-OpenAI partnership from the Irish Council for Civil Liberties. ",
+            answers: {
+                a: 'true',
+                b: 'false',                
+            },
+            correctAnswer: 'b'
+        }
+    ];
+
+    function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
+
+        function showQuestions(questions, quizContainer){
+            var output = [];
+            var answers;
+
+            for(var i=0; i<questions.length; i++){
+                answers = [];
+
+                for(letter in questions[i].answers){
+                    answers.push(
+                        '<label>'
+                            + '<input type="radio" name="question'+i+'" value="'+letter+'">'
+                            + letter + ': '
+                            + questions[i].answers[letter]
+                        + '</label>'
+                    );
+                }
+
+                output.push(
+                    '<div class="question">' + questions[i].question + '</div>'
+                    + '<div class="answers">' + answers.join('') + '</div>'
+                );
+            }
+
+            quizContainer.innerHTML = output.join('');
+        }
+
+        function showResults(questions, quizContainer, resultsContainer){
+            var answerContainers = quizContainer.querySelectorAll('.answers');
+            var userAnswer = '';
+            var numCorrect = 0;
+            
+            for(var i=0; i<questions.length; i++){
+                userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+                
+                if(userAnswer===questions[i].correctAnswer){
+                    numCorrect++;
+                    answerContainers[i].style.color = 'lightgreen';
+                } else {
+                    answerContainers[i].style.color = 'red';
+                }
+            }
+
+            resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
+        }
+
+        showQuestions(questions, quizContainer);
+
+        submitButton.onclick = function(){
+            showResults(questions, quizContainer, resultsContainer);
+        };
+    }
+
+    var quizContainer = document.getElementById('quiz');
+    var resultsContainer = document.getElementById('results');
+    var submitButton = document.getElementById('submit');
+
+    generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
+</script>
+
+</body>
+</html>
